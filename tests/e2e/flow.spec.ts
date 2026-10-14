@@ -18,13 +18,20 @@ test('CSV parcial preserva códigos, recalcula o cenário e gera diagnóstico se
   await page.getByRole('button', { name: 'Abrir minha análise' }).click();
   await expect(page.getByRole('heading', { name: 'Veja o que os números dizem.' })).toBeVisible();
   await expect(page.getByRole('cell', { name: '0012345678905', exact: true }).first()).toBeVisible();
-  await page.getByLabel('Desconto global (%)', { exact: true }).fill('10');
+  const insights = page.getByRole('region', { name: 'Mais clareza em cada decisão.' });
+  await expect(insights.getByRole('heading', { name: 'Quanto do catálogo está na meta?' })).toBeVisible();
+  await expect(insights.getByRole('heading', { name: 'Até onde o desconto leva a margem?' })).toBeVisible();
+  await expect(insights.getByText('66,67%', { exact: true })).toBeVisible();
+  await insights.getByRole('button', { name: 'Aplicar desconto de 10%', exact: true }).click();
+  await expect(page.getByLabel('Desconto global (%)', { exact: true })).toHaveValue('10');
   await page.getByRole('checkbox', { name: 'Incluir taxa' }).check();
   await page.getByRole('spinbutton', { name: /Taxa variável/ }).fill('10');
   const row = page.getByRole('row').filter({ has: page.getByRole('cell', { name: 'Camiseta', exact: false }) });
   await expect(row.getByRole('cell', { name: 'R$ 90,00', exact: true })).toBeVisible();
   await expect(row.getByRole('cell', { name: 'R$ 21,00', exact: true })).toBeVisible();
   await expect(row.getByRole('cell', { name: '23,33%', exact: true })).toBeVisible();
+  await expect(insights.getByText('-10%', { exact: true })).toBeVisible();
+  await expect(insights.getByRole('img', { name: /Composição média por unidade/ })).toHaveAttribute('aria-label', /Taxa: -R\$\s6,75/);
   await page.getByRole('button', { name: 'Quero meu diagnóstico' }).click();
   await page.getByLabel('Seu nome', { exact: true }).fill('Pessoa Teste');
   await page.getByLabel('Nome do negócio', { exact: true }).fill('Loja Teste');
@@ -44,7 +51,7 @@ test('CSV parcial preserva códigos, recalcula o cenário e gera diagnóstico se
   expect(browserErrors).toEqual([]);
 });
 
-test('demonstração em celular mantém layout dentro da tela e não envia catálogo', async ({ page }) => {
+test('demonstração em celular mantém layout dentro da tela e não envia catálogo', async ({ page }, testInfo) => {
   await page.setViewportSize({ width: 390, height: 844 });
   const requests: string[] = [];
   page.on('request', request => { if(request.method() === 'POST') requests.push(request.postData() || ''); });
@@ -53,8 +60,17 @@ test('demonstração em celular mantém layout dentro da tela e não envia catá
   await expect(page.getByRole('heading', { name: 'Veja o que os números dizem.' })).toBeVisible();
   expect(await page.evaluate(() => document.documentElement.scrollWidth <= window.innerWidth)).toBe(true);
   expect(requests.some(body => body.includes('Camiseta básica') || body.includes('0012345678905'))).toBe(false);
+  const insights = page.getByRole('region', { name: 'Mais clareza em cada decisão.' });
+  await expect(insights.getByRole('img')).toHaveCount(3);
+  await expect(insights.getByRole('heading', { name: 'Os menores saldos do catálogo.' })).toBeVisible();
+  await insights.screenshot({ path: testInfo.outputPath('insights-mobile.png') });
+  await page.setViewportSize({ width: 1440, height: 1000 });
+  await insights.screenshot({ path: testInfo.outputPath('insights-desktop.png') });
+  await expect(page.getByRole('heading', { name: 'Como estão as margens?' })).toBeVisible();
+  await expect(page.getByRole('heading', { name: 'As 10 menores margens.' })).toBeVisible();
   await page.emulateMedia({ media: 'print' });
   await expect(page.getByRole('heading', { name: 'Veja o que os números dizem.' })).toBeVisible();
+  await expect(insights).toBeVisible();
 });
 
 test('mapeamento desconhecido pode ser corrigido sem quebrar a aplicação', async ({ page }) => {
