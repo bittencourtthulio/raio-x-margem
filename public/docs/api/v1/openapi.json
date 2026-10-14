@@ -4,7 +4,7 @@
   "info": {
     "title": "Raio-X de Margem — API de integração",
     "version": "1.0.0",
-    "description": "Contrato v1. Produção: https://raio-x-margem.vercel.app. Sandbox disponível somente em instalação local separada. BRL em centavos, percentuais de entrada em pontos-base. Sem garantias de SLA."
+    "description": "Contrato v1. Produção: https://raio-x-margem-five.vercel.app. Sandbox disponível somente em instalação local separada. BRL em centavos, percentuais de entrada em pontos-base. Sem garantias de SLA."
   },
   "servers": [
     {

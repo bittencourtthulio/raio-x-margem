@@ -8,4 +8,4 @@ Integre o catálogo autorizado de uma loja e consulte análises determinísticas
 
 Dinheiro: inteiros em centavos BRL. Percentuais de entrada: pontos-base (1000 = 10%). Percentuais de saída: pontos percentuais (23.333… = 23,33%). Datas UTC RFC 3339. IDs externos e códigos de barras são strings, preservando zeros.
 
-Produção disponível em https://raio-x-margem.vercel.app. Sandbox somente em instalação local separada. Contato operacional: bittencourtthulio@gmail.com.
+Produção disponível em https://raio-x-margem-five.vercel.app. Sandbox somente em instalação local separada. Contato operacional: bittencourtthulio@gmail.com.

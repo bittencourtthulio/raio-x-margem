@@ -5,7 +5,7 @@ description: Construir, revisar e depurar conectores de ERP para a API Raio-X de
 
 # Integrar Raio-X de Margem
 
-Contrato 1.0.0, versão publicada. Leia [contrato e configuração](references/api-contract.md) e confira info.version em [OpenAPI incluído](assets/openapi.json) contra a instalação de destino. Use operationId e schemas reais. Produção: https://raio-x-margem.vercel.app. Publicação pelo titular, sem licença adicional de reutilização.
+Contrato 1.0.0, versão publicada. Leia [contrato e configuração](references/api-contract.md) e confira info.version em [OpenAPI incluído](assets/openapi.json) contra a instalação de destino. Use operationId e schemas reais. Produção: https://raio-x-margem-five.vercel.app. Publicação pelo titular, sem licença adicional de reutilização.
 
 Configure API_BASE_URL, API_KEY e STORE_ID no servidor por variáveis de ambiente ou cofre. Não peça segredos em texto público. GET /me deve confirmar loja, origem, ambiente e escopos. Construir um conector não autoriza escrever em produção. O pacote não executa nada ao instalar ou ler.
 

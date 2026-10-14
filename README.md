@@ -2,8 +2,8 @@
 
 Aplicação para importar CSV de produtos, conferir dados e simular margens, com login Google e API de integração para ERPs.
 
-- Aplicação: https://raio-x-margem.vercel.app
-- Documentação da API: https://raio-x-margem.vercel.app/docs/api
+- Aplicação: https://raio-x-margem-five.vercel.app
+- Documentação da API: https://raio-x-margem-five.vercel.app/docs/api
 - Repositório: https://github.com/bittencourtthulio/raio-x-margem
 
 ## Executar localmente
