@@ -1,0 +1,2 @@
+import { guides } from '@/lib/integration/docs-content';
+export default function Errors() { const guide = guides.find(g => g.slug === 'errors-and-retries')!; return <main style={{padding:'48px', maxWidth:900, margin:'auto'}}><a href="/docs/api#errors-and-retries">← Documentação da API</a><h1>{guide.title}</h1>{guide.text.split('\n\n').map((p,i)=><p key={i}>{p}</p>)}<a href="/docs/api/errors-and-retries.md">Versão Markdown</a></main>; }

@@ -1,0 +1,32 @@
+node_modules/
+.next/
+.env*
+!.env.example
+.data/
+*.db
+*.db-shm
+*.db-wal
+*.tsbuildinfo
+test-results/
+playwright-report/
+firebase-debug.log
+.firebase/
+.venv/
+__pycache__/
+*.py[cod]
+
+.vercel/
+supabase/.temp/
+# Rendered media stays local; publish application and source assets.
+*.mp4
+*.mov
+*.wav
+*.mp3
+*.zip
+outputs/
+.vercel
+!public/downloads/*.zip
+
+# Local campaign assets are separate from the public web application.
+/marketing/
+/videos/

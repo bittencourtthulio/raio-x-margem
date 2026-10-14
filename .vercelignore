@@ -1,0 +1,8 @@
+videos
+marketing
+outputs
+.data
+tests
+.git
+.env*
+firebase-debug.log

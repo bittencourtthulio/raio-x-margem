@@ -1,0 +1,52 @@
+{
+  "name": "raio-x-margem",
+  "version": "0.1.0",
+  "private": true,
+  "scripts": {
+    "dev": "next dev --hostname 127.0.0.1",
+    "build": "next build",
+    "start": "next start --hostname 127.0.0.1",
+    "typecheck": "tsc --noEmit",
+    "test": "node --conditions=react-server --import tsx --test tests/*.test.ts",
+    "db:cleanup": "tsx scripts/cleanup.ts",
+    "test:e2e": "npm run build && playwright test",
+    "setup": "node scripts/setup.mjs",
+    "docs:generate": "tsx scripts/generate-api-docs.ts",
+    "integration:migrate": "tsx scripts/integration-migrate.ts",
+    "integration:worker": "tsx scripts/integration-worker.ts",
+    "integration:sandbox": "tsx scripts/integration-sandbox.ts",
+    "test:integration": "tsx --test tests/integration.test.ts",
+    "test:connectors": "tsx scripts/validate-api-examples.ts"
+  },
+  "engines": {
+    "node": ">=22.13.0"
+  },
+  "dependencies": {
+    "@next/env": "16.4.0",
+    "better-sqlite3": "13.0.3",
+    "firebase": "12.10.0",
+    "firebase-admin": "13.10.0",
+    "lucide-react": "1.57.0",
+    "next": "16.4.0",
+    "papaparse": "5.7.0",
+    "pg": "8.23.1",
+    "react": "19.3.0",
+    "react-dom": "19.3.0",
+    "server-only": "0.0.1",
+    "zod": "4.6.7"
+  },
+  "devDependencies": {
+    "@playwright/test": "1.64.1",
+    "@types/better-sqlite3": "9.6.0",
+    "@types/node": "26.6.5",
+    "@types/papaparse": "5.5.2",
+    "@types/pg": "8.23.1",
+    "@types/react": "19.3.0",
+    "@types/react-dom": "19.3.0",
+    "tsx": "4.23.15",
+    "typescript": "7.0.2"
+  },
+  "overrides": {
+    "@firebase/app": "0.14.9"
+  }
+}

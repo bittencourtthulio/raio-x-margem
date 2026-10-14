@@ -1,0 +1,71 @@
+import { test, expect } from '@playwright/test';
+import { loginCompleteAccount } from './auth-helpers';
+test.beforeEach(async ({ page }) => { await loginCompleteAccount(page); });
+
+const csv = '\uFEFFcodigo_barras;produto;preco_compra;preco_venda\r\n0012345678905;Camiseta;60,00;100,00\r\n0012345678906;Inválido;;50,00\r\n0012345678905;Outro;60,00;50,00';
+
+test('CSV parcial preserva códigos, recalcula o cenário e gera diagnóstico sem consentimento comercial', async ({ page }) => {
+  const browserErrors: string[] = [];
+  page.on('pageerror', error => browserErrors.push(error.message));
+  await page.goto('/');
+  await page.getByRole('button', { name: 'Analisar meus produtos' }).first().click();
+  await page.getByLabel('Selecionar CSV', { exact: true }).setInputFiles({ name: 'loja.csv', mimeType: 'text/csv', buffer: Buffer.from(csv) });
+  await expect(page.getByRole('heading', { name: 'Colunas certas. Análise confiável.' })).toBeVisible();
+  await page.getByRole('button', { name: 'Conferir registros' }).click();
+  await expect(page.getByText('Linha 3', { exact: true })).toBeVisible();
+  await expect(page.getByRole('button', { name: 'Abrir minha análise' })).toBeDisabled();
+  await page.getByLabel(/Entendo que as linhas inválidas/).check();
+  await page.getByRole('button', { name: 'Abrir minha análise' }).click();
+  await expect(page.getByRole('heading', { name: 'Veja o que os números dizem.' })).toBeVisible();
+  await expect(page.getByRole('cell', { name: '0012345678905', exact: true }).first()).toBeVisible();
+  await page.getByLabel('Desconto global (%)', { exact: true }).fill('10');
+  await page.getByRole('checkbox', { name: 'Incluir taxa' }).check();
+  await page.getByRole('spinbutton', { name: /Taxa variável/ }).fill('10');
+  const row = page.getByRole('row').filter({ has: page.getByRole('cell', { name: 'Camiseta', exact: false }) });
+  await expect(row.getByRole('cell', { name: 'R$ 90,00', exact: true })).toBeVisible();
+  await expect(row.getByRole('cell', { name: 'R$ 21,00', exact: true })).toBeVisible();
+  await expect(row.getByRole('cell', { name: '23,33%', exact: true })).toBeVisible();
+  await page.getByRole('button', { name: 'Quero meu diagnóstico' }).click();
+  await page.getByLabel('Seu nome', { exact: true }).fill('Pessoa Teste');
+  await page.getByLabel('Nome do negócio', { exact: true }).fill('Loja Teste');
+  await page.getByLabel('Email ou WhatsApp', { exact: true }).fill('teste@example.com');
+  await page.getByLabel(/Li o aviso de tratamento/).check();
+  await expect(page.getByLabel(/Aceito contato sobre o software/)).not.toBeChecked();
+  await expect(page.getByLabel(/Autorizo salvar o resumo/)).not.toBeChecked();
+  const outgoing = page.waitForRequest(request => request.url().endsWith('/api/diagnostics'));
+  await page.getByRole('button', { name: 'Gerar meu diagnóstico' }).click();
+  const payload = (await outgoing).postDataJSON();
+  expect(payload.lead.commercialConsent).toBe(false);
+  expect(payload.lead.saveSummaryConsent).toBe(false);
+  expect(JSON.stringify(payload)).not.toContain('0012345678905');
+  expect(JSON.stringify(payload)).not.toContain('Camiseta');
+  await expect(page.getByText('MODO DEMONSTRATIVO · SEM IA REAL')).toBeVisible();
+  await expect(page.getByRole('heading', { name: 'Veja o que os números dizem.' })).toBeVisible();
+  expect(browserErrors).toEqual([]);
+});
+
+test('demonstração em celular mantém layout dentro da tela e não envia catálogo', async ({ page }) => {
+  await page.setViewportSize({ width: 390, height: 844 });
+  const requests: string[] = [];
+  page.on('request', request => { if(request.method() === 'POST') requests.push(request.postData() || ''); });
+  await page.goto('/');
+  await page.getByRole('button', { name: /Experimentar com dados de exemplo|Experimentar uma demonstração/ }).click();
+  await expect(page.getByRole('heading', { name: 'Veja o que os números dizem.' })).toBeVisible();
+  expect(await page.evaluate(() => document.documentElement.scrollWidth <= window.innerWidth)).toBe(true);
+  expect(requests.some(body => body.includes('Camiseta básica') || body.includes('0012345678905'))).toBe(false);
+  await page.emulateMedia({ media: 'print' });
+  await expect(page.getByRole('heading', { name: 'Veja o que os números dizem.' })).toBeVisible();
+});
+
+test('mapeamento desconhecido pode ser corrigido sem quebrar a aplicação', async ({ page }) => {
+  await page.goto('/');
+  await page.getByRole('button', { name: 'Analisar meus produtos' }).first().click();
+  await page.getByLabel('Selecionar CSV', { exact: true }).setInputFiles({ name: 'custom.csv', mimeType: 'text/csv', buffer: Buffer.from('A;B;C\nServiço;10;20') });
+  await expect(page.getByRole('button', { name: 'Conferir registros' })).toBeDisabled();
+  await page.getByRole('combobox', { name: 'Nome do produto *', exact: true }).selectOption('0');
+  await page.getByRole('combobox', { name: 'Custo unitário *', exact: true }).selectOption('1');
+  await page.getByRole('combobox', { name: 'Preço de venda *', exact: true }).selectOption('2');
+  await page.getByRole('button', { name: 'Conferir registros' }).click();
+  await page.getByRole('button', { name: 'Abrir minha análise' }).click();
+  await expect(page.getByRole('heading', { name: 'Veja o que os números dizem.' })).toBeVisible();
+});
