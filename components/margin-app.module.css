@@ -1,0 +1,129 @@
+@font-face {
+  font-family: WorkspaceMargem;
+  src: url('/fonts/manrope-latin.woff2') format('woff2');
+  font-weight: 200 800;
+  font-style: normal;
+  font-display: swap;
+}
+
+/* Match the landing and authentication pages across every CSV workflow stage. */
+.workspace {
+  --paper: #fff;
+  --surface: #fff;
+  --ink: #111318;
+  --muted: #525866;
+  --line: #e2e5eb;
+  --accent: #2563eb;
+  --accent-soft: #eff6ff;
+  --green: var(--accent);
+  --lime: var(--accent-soft);
+  --red: #b42332;
+  --sans: WorkspaceMargem, 'Avenir Next', sans-serif;
+  --serif: var(--sans);
+  min-height: 100vh;
+  min-height: 100dvh;
+  display: flex;
+  flex-direction: column;
+  background: var(--paper);
+  color: var(--ink);
+  color-scheme: light;
+  font-family: var(--sans);
+}
+
+.workspace > main { width: 100%; flex: 1; }
+.workspace :global(.site-header),
+.workspace :global(.site-footer) { width: 100%; }
+.workspace :global(.site-header) { height: 94px; flex-shrink: 0; }
+.workspace :global(.brand) { font-size: 29px; font-weight: 800; }
+.workspace :global(.brand-symbol) { background: #fff; color: var(--ink); border: 1px solid var(--ink); border-radius: 12px; }
+.workspace :global(.brand-accent) { color: var(--accent); }
+.workspace :global(.brand-sub) { font-size: 8px; font-weight: 700; }
+
+.workspace h1,
+.workspace h2,
+.workspace h3 { font-family: var(--sans); font-weight: 750; }
+.workspace h1 { letter-spacing: -1.7px; line-height: 1.2; }
+.workspace h2 { letter-spacing: -1px; line-height: 1.25; }
+.workspace h3 { letter-spacing: -.3px; }
+.workspace h1[tabindex='-1']:focus { outline: none; }
+.workspace :global(.eyebrow) { color: var(--accent); font-weight: 750; }
+.workspace :global(.workspace-title) { padding-top: 48px; }
+.workspace :global(.steps) { color: var(--muted); }
+.workspace :global(.steps) b { font-weight: 700; }
+.workspace :global(.steps .done) { font-weight: 650; }
+
+.workspace :global(.panel),
+.workspace :global(.lead-form),
+.workspace :global(.diagnostic-result) { border-radius: 14px; }
+.workspace :global(.upload-panel) { padding-block: 42px; box-shadow: 0 20px 60px #14294a08; }
+.workspace :global(.button) { border-radius: 7px; font-weight: 700; }
+.workspace :global(.primary) { background: var(--accent); color: #fff; }
+.workspace :global(.primary:hover) { background: #1d4ed8; }
+.workspace :global(.text-button:hover),
+.workspace :global(.download-link) { color: var(--accent); }
+.workspace :global(.download-link) { font-weight: 650; }
+.workspace :global(.privacy-box) { padding: 20px; border: 0; border-radius: 10px; background: var(--accent-soft); }
+.workspace :global(.privacy-box) p { margin: 0; }
+
+.workspace input:not([type=checkbox]),
+.workspace select { background: #fff; border-color: #cbd5e1; border-radius: 7px; }
+.workspace input:disabled { background: #f6f7f9; }
+/* Keep the accessible file input outside the visible layout. */
+.workspace input:global(.sr-only) { width: 1px; height: 1px; padding: 0; border: 0; }
+.workspace button:focus-visible,
+.workspace a:focus-visible,
+.workspace input:focus-visible,
+.workspace select:focus-visible { outline: 3px solid var(--accent); outline-offset: 4px; }
+.workspace :global(.file-tag),
+.workspace th { background: #f6f7f9; }
+.workspace td,
+.workspace :global(.ranking) li { border-color: var(--line); }
+.workspace th { font-weight: 650; }
+.workspace :global(.file-tag) { border-radius: 6px; }
+.workspace :global(.rank-number) { color: var(--muted); }
+.workspace :global(.message) { background: var(--accent-soft); border-color: #bfdbfe; border-radius: 7px; }
+.workspace :global(.message.error),
+.workspace :global(.error-list) { background: #fef2f2; border-color: #fecaca; color: #991b1b; border-radius: 7px; }
+.workspace :global(.analysis-banner) { background: var(--accent-soft); border: 1px solid #dbeafe; border-radius: 8px; }
+
+.workspace :global(.metric) { border-radius: 12px; }
+.workspace :global(.metric) strong,
+.workspace :global(.review-stats) strong { font-weight: 650; font-variant-numeric: tabular-nums; }
+.workspace :global(.metric-2) { background: #fff5f5; border-color: #fee2e2; }
+.workspace :global(.metric-3) { background: var(--accent-soft); border-color: #dbeafe; }
+.workspace :global(.bar-track) { background: repeating-linear-gradient(to top, transparent 0, transparent 49px, #e2e5eb 50px); }
+.workspace :global(.bar) { border-radius: 5px 5px 0 0; }
+.workspace :global(.bar-0) { background: #dc6873; }
+.workspace :global(.bar-1) { background: #bfdbfe; }
+.workspace :global(.bar-2) { background: #60a5fa; }
+.workspace :global(.bar-3) { background: var(--accent); }
+.workspace :global(.pagination) button { border-radius: 6px; }
+.workspace :global(.pagination) button:hover:not(:disabled) { background: var(--accent-soft); }
+
+.workspace :global(.diagnostic-placeholder) { background: var(--accent-soft); border: 1px solid #dbeafe; border-radius: 14px; }
+.workspace :global(.diagnostic-placeholder) h3,
+.workspace :global(.diagnostic-result) h3,
+.workspace :global(.erp-cta) h3 { font-weight: 700; }
+.workspace :global(.erp-cta) { background: var(--accent-soft); color: var(--ink); border: 1px solid #dbeafe; border-radius: 14px; }
+.workspace :global(.erp-cta) p,
+.workspace :global(.cta-pending) { color: var(--muted); }
+.workspace :global(.light) { background: var(--accent); color: #fff; }
+.workspace :global(.light:hover) { background: #1d4ed8; }
+
+@media (max-width: 700px) {
+  .workspace :global(.site-header) { height: 83px; }
+  .workspace :global(.brand) { font-size: 25px; }
+  .workspace :global(.workspace-title) { padding-top: 30px; flex-wrap: wrap; gap: 0; margin-bottom: 24px; }
+  .workspace :global(.workspace-title) h1 { margin-bottom: 12px; }
+  .workspace :global(.workspace-title) > :global(.text-button) { font-size: 11px; }
+  .workspace :global(.upload-panel) { padding: 30px 20px; }
+  .workspace :global(.upload-panel) h2 { font-size: 28px; }
+  .workspace :global(.privacy-box) { padding: 17px; }
+}
+
+@media print {
+  .workspace { display: block; min-height: 0; }
+  .workspace :global(.site-header) { height: 65px; }
+  .workspace :global(.panel) { box-shadow: none; }
+  .workspace :global(.workspace-title) { padding-top: 25px; }
+}
