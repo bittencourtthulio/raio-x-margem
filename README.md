@@ -60,3 +60,9 @@ npm run test:connectors
 O portal oferece OpenAPI 3.1.1, guias Markdown, `/llms.txt` e uma skill em ZIP com SHA-256. Consulte [operação](docs/integration-operations.md) para quotas, retenção e recuperação. O sandbox hospedado e conectores com ERPs externos não fazem parte deste deploy.
 
 Credenciais, bancos locais e materiais de campanha ficam fora do Git. Publicar o código não concede automaticamente uma licença adicional de reutilização.
+
+## Aula de primeiros passos
+
+O botão **Como usar**, no cabeçalho de `/app`, abre uma aula de aproximadamente cinco minutos com importação de CSV, conferência dos dados e simulações. O modal também abre no primeiro acesso de cada conta neste navegador; o fechamento é lembrado em `localStorage` por conta e versão da aula. Limpar os dados do navegador ou usar outro navegador apresenta a aula novamente. O vídeo não reproduz automaticamente e só carrega enquanto o modal está aberto.
+
+O MP4 fica no [release da aula](https://github.com/bittencourtthulio/raio-x-margem/releases/tag/tutorial-primeiros-passos-v1). Capa e legendas WebVTT ficam em `public/tutorial`. Para atualizar a aula, publique um novo asset versionado e atualize a URL e a versão em `components/tutorial-dialog.tsx`.

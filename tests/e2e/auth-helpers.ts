@@ -19,10 +19,16 @@ export async function loginIdentity(page: Page, verified = true) {
   const response = await authenticatedPost(page, '/api/auth/session', { idToken: (await exchange.json()).idToken });
   return { response, auth, uid };
 }
-export async function loginCompleteAccount(page: Page) {
+export async function loginCompleteAccount(page: Page, { dismissTutorial = true } = {}) {
   const identity = await loginIdentity(page);
   expect(identity.response.status()).toBe(200);
   const response = await authenticatedPost(page, '/api/auth/profile', { name: 'Pessoa Teste', businessName: 'Loja Teste', contact: `${identity.uid}@example.com`, sector: 'retail', role: 'owner', currentControl: 'spreadsheet', systemDifficulty: false, commercialConsent: false, saveSummaryConsent: false, privacyAcknowledged: true });
   expect(response.status()).toBe(200);
+  if (dismissTutorial) {
+    await page.goto('/app');
+    await expect(page.getByRole('dialog', { name: 'Seu primeiro Raio-X.' })).toBeVisible();
+    await page.getByRole('button', { name: 'Continuar para a ferramenta' }).click();
+    await expect(page.locator('video')).toHaveCount(0);
+  }
   return identity;
 }

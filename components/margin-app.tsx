@@ -7,12 +7,13 @@ import { analyzeProducts, DEMO_PRODUCTS } from '@/lib/analysis';
 import { DEFAULT_SCENARIO, type Product, type Scenario, type DiagnosticRequest, type DiagnosticResult, type Summary } from '@/lib/contracts';
 import styles from './margin-app.module.css';
 import AnalysisInsights from './analysis-insights';
+import TutorialDialog from './tutorial-dialog';
 type Parsed = ReturnType<typeof parseCsv>;
 type Mapping = ReturnType<typeof suggestMapping>;
 const money = (v: number) => (v / 100).toLocaleString('pt-BR', {style:'currency',currency:'BRL'});
 const percent = (v: number | null) => v === null ? 'Não aplicável' : `${v.toLocaleString('pt-BR',{maximumFractionDigits:2})}%`;
 async function event(name: string, demo=false) { try { await fetch('/api/events',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({event:name,demo})}); } catch {} }
-export default function MarginApp({companyLabel,erpUrl,privacyEmail,accountProfile,initialDemo=false}:{companyLabel:string;erpUrl:string;privacyEmail:string;accountProfile:DiagnosticRequest['lead'];initialDemo?:boolean}) {
+export default function MarginApp({companyLabel,erpUrl,privacyEmail,accountProfile,accountId,initialDemo=false}:{companyLabel:string;erpUrl:string;privacyEmail:string;accountProfile:DiagnosticRequest['lead'];accountId:string;initialDemo?:boolean}) {
  const [stage,setStage]=useState<'import'|'mapping'|'review'|'analysis'>(initialDemo?'analysis':'import');
  const [parsed,setParsed]=useState<Parsed|null>(null), [mapping,setMapping]=useState<Mapping|null>(null);
  const [format,setFormat]=useState<'BR'|'US'>('BR'),[delimiter,setDelimiter]=useState(''),[raw,setRaw]=useState(''),[filename,setFilename]=useState('');
@@ -30,7 +31,7 @@ export default function MarginApp({companyLabel,erpUrl,privacyEmail,accountProfi
  function changeDelimiter(value:string){setDelimiter(value);try{const data=parseCsv(raw,value as ','|';');setParsed(data);setMapping(suggestMapping(data.headers));setError('');}catch(e){setError(e instanceof Error?e.message:'Delimitador inválido.');}}
  function startAnalysis(){if(!validation||!validation.products.length)return;setProducts(validation.products);setInvalidCount(validation.errors.length);setDemo(false);setScenario({...DEFAULT_SCENARIO});setStage('analysis');event('import_validated');event('analysis_viewed');}
  async function logout(){try{await authenticatedPost('/api/auth/logout');window.location.assign('/entrar');}catch(e){setError(e instanceof Error?e.message:'Não foi possível sair.');}}
- return <div className={styles.workspace}><header className="site-header"><a href="/" className="brand" aria-label="Raio-X de Margem, início"><span className="brand-symbol"><ScanLine size={23}/></span><span>raio<span className="brand-accent">×</span><span className="brand-sub">de margem</span></span></a><span className="header-note">Uma visão mais clara do seu negócio <span className="small-dot"/></span><nav aria-label="Navegação da conta" style={{display:'flex',alignItems:'center',justifyContent:'flex-end',flexWrap:'wrap',gap:'4px 18px',maxWidth:'52%'}}><a className="text-button" href="/app/integracoes">Integrações</a><button className="text-button" onClick={logout}>Sair da conta <X size={16}/></button></nav></header>
+ return <div className={styles.workspace}><header className="site-header"><a href="/" className="brand" aria-label="Raio-X de Margem, início"><span className="brand-symbol"><ScanLine size={23}/></span><span>raio<span className="brand-accent">×</span><span className="brand-sub">de margem</span></span></a><span className="header-note">Uma visão mais clara do seu negócio <span className="small-dot"/></span><nav aria-label="Navegação da conta" style={{display:'flex',alignItems:'center',justifyContent:'flex-end',flexWrap:'wrap',gap:'4px 18px',maxWidth:'52%'}}><TutorialDialog accountId={accountId} /><a className="text-button" href="/app/integracoes">Integrações</a><button className="text-button" onClick={logout}>Sair da conta <X size={16}/></button></nav></header>
  <main>
  <div className="workspace-title"><div><span className="eyebrow">SEU RAIO-X DE MARGEM</span><h1>{stage==='analysis'?'Veja o que os números dizem.':'Vamos conhecer seus produtos.'}</h1></div><button className="text-button" onClick={()=>window.location.assign('/')}>Voltar ao início <X size={17}/></button></div><nav className="steps" aria-label="Etapas da análise">{['Importar','Mapear colunas','Conferir','Analisar'].map((s,i)=><span className={(['import','mapping','review','analysis'].indexOf(stage)>=i?'done':'')} key={s}><b>{i+1}</b>{s}{i<3&&<ChevronRight size={14}/>}</span>)}</nav>
  {error&&<div className="message error" role="alert">{error}</div>}

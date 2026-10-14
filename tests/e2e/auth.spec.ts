@@ -32,6 +32,8 @@ test('cadastro exige negócio, mantém contato comercial opcional e libera acess
   await page.getByLabel(/Li o aviso de privacidade/).check();
   await page.getByRole('button', { name: 'Concluir cadastro e acessar' }).click();
   await expect(page).toHaveURL('/app?modo=demo');
+  await expect(page.getByRole('dialog', { name: 'Seu primeiro Raio-X.' })).toBeVisible();
+  await page.getByRole('button', { name: 'Continuar para a ferramenta' }).click();
   await expect(page.getByRole('heading', { name: 'Veja o que os números dizem.' })).toBeVisible();
   expect((await page.request.get('/api/auth/me')).status()).toBe(200);
   await page.reload();

@@ -5,5 +5,5 @@ export default async function Workspace({ searchParams }: { searchParams: Promis
   const { modo } = await searchParams, account = await currentAccount();
   if (!account) redirect(`/entrar${modo === 'demo' ? '?modo=demo' : ''}`);
   if (!account.profile) redirect(`/completar-cadastro${modo === 'demo' ? '?modo=demo' : ''}`);
-  return <MarginApp companyLabel={process.env.COMPANY_LABEL || 'seu próximo sistema de gestão'} erpUrl={process.env.ERP_CTA_URL || ''} privacyEmail={process.env.PRIVACY_CONTACT_EMAIL || ''} accountProfile={account.profile} initialDemo={modo === 'demo'} />;
+  return <MarginApp companyLabel={process.env.COMPANY_LABEL || 'seu próximo sistema de gestão'} erpUrl={process.env.ERP_CTA_URL || ''} privacyEmail={process.env.PRIVACY_CONTACT_EMAIL || ''} accountProfile={account.profile} accountId={account.id} initialDemo={modo === 'demo'} />;
 }

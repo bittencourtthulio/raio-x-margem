@@ -1,0 +1,301 @@
+WEBVTT
+
+1
+00:00:00.424 --> 00:00:04.360
+Nesta aula, você vai sair de uma planilha de produtos para uma análise que
+
+2
+00:00:04.395 --> 00:00:09.062
+dá para entender. Vamos entrar no Raio-X de Margem, importar um arquivo, conferir
+
+3
+00:00:09.097 --> 00:00:12.181
+os dados e simular o efeito de descontos e taxas.
+
+4
+00:00:12.417 --> 00:00:15.919
+Tudo com um catálogo de exemplo, para você acompanhar cada conta.
+
+5
+00:00:17.344 --> 00:00:22.111
+Na página inicial, clique em Entrar e depois em Continuar com Google.
+
+6
+00:00:22.255 --> 00:00:26.407
+No seu acesso, escolha sua conta e conclua a autorização.
+
+7
+00:00:26.585 --> 00:00:30.087
+A etapa privada de autenticação foi omitida nesta gravação.
+
+8
+00:00:30.231 --> 00:00:34.499
+Daqui em diante, vou usar uma conta de demonstração, com dados fictícios.
+
+9
+00:00:35.936 --> 00:00:40.603
+No primeiro acesso, confirme seu nome, o nome do negócio, o segmento, seu
+
+10
+00:00:40.638 --> 00:00:43.489
+papel e como você controla a operação.
+
+11
+00:00:43.563 --> 00:00:45.509
+Confira o aviso de privacidade.
+
+12
+00:00:45.584 --> 00:00:49.782
+A opção de receber contato comercial é separada e opcional.
+
+13
+00:00:49.961 --> 00:00:53.416
+Depois, clique em Concluir cadastro e acessar.
+
+14
+00:00:53.711 --> 00:00:56.841
+Nas próximas entradas, o cadastro já estará preenchido.
+
+15
+00:00:58.289 --> 00:01:01.524
+Aqui começa a importação. Você pode baixar o arquivo modelo.
+
+16
+00:01:01.633 --> 00:01:05.181
+O formato aceito é CSV em UTF oito.
+
+17
+00:01:05.534 --> 00:01:09.465
+Nome do produto, custo unitário e preço de venda são obrigatórios;
+
+18
+00:01:09.609 --> 00:01:13.927
+código de barras é opcional. Neste exemplo, preparei nove linhas, incluindo
+
+19
+00:01:13.962 --> 00:01:16.628
+uma com custo faltando para mostrar a conferência.
+
+20
+00:01:16.772 --> 00:01:20.645
+Clique em Selecionar arquivo CSV e abra o catálogo da aula.
+
+21
+00:01:22.082 --> 00:01:25.259
+Antes de calcular, confira como o arquivo foi lido.
+
+22
+00:01:25.368 --> 00:01:30.221
+Nosso CSV usa ponto e vírgula como separador e valores no formato
+
+23
+00:01:30.256 --> 00:01:32.411
+brasileiro, com vírgula decimal.
+
+24
+00:01:32.647 --> 00:01:37.035
+Veja se produto está associado ao nome, preço de compra ao custo e preço de
+
+25
+00:01:37.070 --> 00:01:41.598
+venda ao valor de venda. A prévia ajuda a identificar qualquer coluna
+
+26
+00:01:41.633 --> 00:01:45.425
+trocada. Estando correto, clique em Conferir registros.
+
+27
+00:01:46.723 --> 00:01:50.229
+O sistema encontrou oito registros válidos e um inválido.
+
+28
+00:01:50.264 --> 00:01:54.683
+A linha dez está sem custo. Você pode corrigir o arquivo e importar novamente.
+
+29
+00:01:54.862 --> 00:01:59.378
+Para esta aula, vou marcar que entendi a exclusão e analisar somente os oito
+
+30
+00:01:59.413 --> 00:02:03.314
+registros válidos. A linha com problema fica fora dos cálculos.
+
+31
+00:02:03.349 --> 00:02:05.608
+Agora, clique em Abrir minha análise.
+
+32
+00:02:07.010 --> 00:02:11.104
+Começamos sem desconto e sem taxa, com meta de vinte por cento.
+
+33
+00:02:11.213 --> 00:02:13.681
+Essa meta inicial é apenas um exemplo.
+
+34
+00:02:13.755 --> 00:02:18.267
+O painel mostra dois produtos com resultado negativo e cinco abaixo da meta.
+
+35
+00:02:18.376 --> 00:02:22.157
+Atenção: os dois negativos já fazem parte desses cinco.
+
+36
+00:02:22.301 --> 00:02:26.364
+Esses números contam cadastros de produtos, não vendas realizadas nem o lucro
+
+37
+00:02:26.399 --> 00:02:27.370
+total da loja.
+
+38
+00:02:28.736 --> 00:02:33.032
+Nos indicadores, a margem média é quatorze vírgula quarenta e cinco por cento.
+
+39
+00:02:33.067 --> 00:02:36.522
+É uma média simples: cada produto tem o mesmo peso.
+
+40
+00:02:36.631 --> 00:02:41.344
+Três dos oito produtos estão na meta ou acima, ou trinta e sete
+
+41
+00:02:41.379 --> 00:02:46.197
+e meio por cento. O gráfico de distribuição separa esses três, os três abaixo
+
+42
+00:02:46.232 --> 00:02:48.774
+da meta sem perda e os dois negativos.
+
+43
+00:02:48.809 --> 00:02:53.639
+O aproveitamento do arquivo é oitenta e oito vírgula oitenta e nove por cento,
+
+44
+00:02:53.674 --> 00:02:56.189
+porque uma das nove linhas foi excluída.
+
+45
+00:02:57.603 --> 00:02:59.816
+Na tabela, vamos buscar a camiseta.
+
+46
+00:02:59.925 --> 00:03:02.765
+Ela custa sessenta reais e é vendida por cem.
+
+47
+00:03:02.909 --> 00:03:05.842
+Sobram quarenta reais de margem bruta por unidade.
+
+48
+00:03:05.951 --> 00:03:09.840
+Para achar a margem percentual, dividimos quarenta pelo preço de venda de
+
+49
+00:03:09.875 --> 00:03:13.856
+cem: quarenta por cento. O denominador é o preço de venda.
+
+50
+00:03:13.891 --> 00:03:17.927
+E essa sobra ainda não desconta todas as despesas da operação.
+
+51
+00:03:19.294 --> 00:03:22.889
+Agora, vamos aplicar dez por cento de desconto global.
+
+52
+00:03:22.963 --> 00:03:27.909
+O preço simulado da camiseta cai para noventa reais, enquanto o custo continua
+
+53
+00:03:27.944 --> 00:03:32.529
+em sessenta. A sobra cai para trinta reais, e a margem passa
+
+54
+00:03:32.564 --> 00:03:35.764
+a trinta e três vírgula trinta e três por cento.
+
+55
+00:03:35.838 --> 00:03:39.874
+O desconto de dez reais consumiu um quarto da sobra anterior.
+
+56
+00:03:40.018 --> 00:03:42.835
+A simulação não altera seu arquivo original.
+
+57
+00:03:44.213 --> 00:03:47.169
+Ative Incluir taxa e informe três por cento.
+
+58
+00:03:47.243 --> 00:03:51.650
+Sobre a venda de noventa reais, a taxa é dois reais e setenta centavos.
+
+59
+00:03:51.759 --> 00:03:55.637
+Descontando custo e taxa, a contribuição estimada da camiseta fica em vinte
+
+60
+00:03:55.672 --> 00:03:59.917
+e sete reais e trinta centavos, ou trinta vírgula trinta e três por cento.
+
+61
+00:04:00.026 --> 00:04:04.484
+Repare que agora estamos olhando contribuição, depois da taxa, e não só margem
+
+62
+00:04:04.519 --> 00:04:05.107
+bruta.
+
+63
+00:04:06.543 --> 00:04:11.391
+No catálogo completo, esse cenário deixa cinco produtos com resultado negativo.
+
+64
+00:04:11.535 --> 00:04:14.700
+A média cai para um vírgula noventa e quatro por cento.
+
+65
+00:04:14.879 --> 00:04:17.463
+A curva de descontos compara simulações;
+
+66
+00:04:17.538 --> 00:04:19.576
+ela não é um histórico de vendas.
+
+67
+00:04:19.755 --> 00:04:23.842
+Nos menores saldos, a caneca aparece com menos dezesseis reais e trinta e
+
+68
+00:04:23.877 --> 00:04:28.312
+cinco centavos por unidade. Use esses sinais para conferir custo e preço antes
+
+69
+00:04:28.347 --> 00:04:29.747
+de decidir uma promoção.
+
+70
+00:04:31.172 --> 00:04:35.827
+O caminho é este: preparar o CSV, conferir as colunas, tratar os avisos
+
+71
+00:04:35.862 --> 00:04:40.065
+e comparar cenários. Use a busca e os filtros para investigar os produtos
+
+72
+00:04:40.100 --> 00:04:44.140
+que pedem atenção. O catálogo fica na memória do navegador;
+
+73
+00:04:44.175 --> 00:04:47.351
+ao fechar a página, será preciso importar novamente.
+
+74
+00:04:47.495 --> 00:04:51.473
+E lembre: margem ou contribuição estimada não é lucro líquido.
+
+75
+00:04:51.617 --> 00:04:54.434
+Agora, repita o processo com o seu arquivo.
