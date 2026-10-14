@@ -5,7 +5,7 @@ export type Delimiter = ';' | ',';
 export type NumberFormat = 'BR' | 'US';
 export type ColumnMapping = { barcode: number | null; name: number | null; cost: number | null; price: number | null };
 export type ParsedCsv = { headers: string[]; rows: { sourceRow: number; cells: string[] }[]; delimiter: Delimiter };
-export const MAX_FILE_BYTES = 2 * 1024 * 1024;
+export const MAX_FILE_BYTES = 25 * 1024 * 1024;
 export const MAX_RECORDS = 5000;
 
 // Papa handles CSV structure; this additional check rejects stray quotes which
@@ -34,7 +34,7 @@ function hasMalformedQuotes(record: string, delimiter: Delimiter): boolean {
 }
 
 export async function decodeCsvFile(file: File): Promise<string> {
-  if (file.size > MAX_FILE_BYTES) throw new Error('O arquivo ultrapassa 2 MB. Exporte um catálogo menor.');
+  if (file.size > MAX_FILE_BYTES) throw new Error('O arquivo ultrapassa 25 MB. Exporte um catálogo menor.');
   try {
     return new TextDecoder('utf-8', { fatal: true }).decode(await file.arrayBuffer());
   } catch {
@@ -43,7 +43,7 @@ export async function decodeCsvFile(file: File): Promise<string> {
 }
 
 export function parseCsv(rawText: string, delimiter?: Delimiter): ParsedCsv {
-  if (new TextEncoder().encode(rawText).length > MAX_FILE_BYTES) throw new Error('O arquivo ultrapassa 2 MB.');
+  if (new TextEncoder().encode(rawText).length > MAX_FILE_BYTES) throw new Error('O arquivo ultrapassa 25 MB.');
   const text = rawText.replace(/^\uFEFF/, '');
   const records: ParsedCsv['rows'] = [];
   let cursor = 0;

@@ -174,7 +174,7 @@ const questions = [
   ],
   [
     "Que arquivo posso usar?",
-    "Use um CSV em UTF-8 com nome do produto, custo unitário e preço de venda. O código de barras é opcional. São aceitos arquivos de até 2 MB e 5.000 registros. Você poderá conferir as colunas e escolher o formato numérico antes de analisar.",
+    "Use um CSV em UTF-8 com nome do produto, custo unitário e preço de venda. O código de barras é opcional. São aceitos arquivos de até 25 MB e 5.000 registros. Você poderá conferir as colunas e escolher o formato numérico antes de analisar.",
   ],
   [
     "Minha planilha fica salva?",

@@ -45,7 +45,7 @@ test('malformed quotes, oversized inputs and excessive records block import', ()
   assert.throws(() => parseCsv('nome;custo;venda\n"Nome;1;2'), /Aspas/);
   assert.throws(() => parseCsv('nome;custo;venda\nNome"solta;1;2'), /Aspas/);
   assert.throws(() => parseCsv('nome;custo;venda\n"Nome"solta;1;2'), /Aspas/);
-  assert.throws(() => parseCsv('x'.repeat(MAX_FILE_BYTES + 1)), /2 MB/);
+  assert.throws(() => parseCsv('x'.repeat(MAX_FILE_BYTES + 1)), /25 MB/);
   assert.throws(() => parseCsv('nome;custo;venda\n' + 'Item;1;2\n'.repeat(MAX_RECORDS + 1)), /5.000/);
   assert.equal(parseCsv('nome;custo;venda\n' + 'Item;1;2\n'.repeat(MAX_RECORDS)).rows.length, MAX_RECORDS);
 });
@@ -54,7 +54,23 @@ test('file decoder accepts UTF-8 BOM and rejects invalid UTF-8 and oversized fil
   const valid = new File(['\uFEFFnome;custo;venda\nCafé;1;2'], 'catalogo.csv');
   assert.equal((await decodeCsvFile(valid)).startsWith('nome'), true);
   await assert.rejects(() => decodeCsvFile(new File([new Uint8Array([0xc3, 0x28])], 'invalido.csv')), /UTF-8/);
-  await assert.rejects(() => decodeCsvFile(new File(['x'.repeat(MAX_FILE_BYTES + 1)], 'grande.csv')), /2 MB/);
+  await assert.rejects(() => decodeCsvFile(new File(['x'.repeat(MAX_FILE_BYTES + 1)], 'grande.csv')), /25 MB/);
+});
+
+test('CSV import accepts files above 2 MB up to exactly 25 MB and measures UTF-8 bytes', async () => {
+  assert.equal(MAX_FILE_BYTES, 25 * 1024 * 1024);
+  const prefix = 'nome;custo;venda;extra\nItem;1;2;';
+  const largeCsv = prefix + 'x'.repeat(3 * 1024 * 1024 - prefix.length);
+  const boundaryCsv = prefix + 'x'.repeat(MAX_FILE_BYTES - prefix.length);
+  for (const csv of [largeCsv, boundaryCsv]) {
+    const decoded = await decodeCsvFile(new File([csv], 'catalogo.csv'));
+    assert.equal(decoded, csv);
+    assert.equal(parseCsv(decoded).rows.length, 1);
+  }
+  const multibyteCsv = prefix + 'é'.repeat(Math.floor((MAX_FILE_BYTES - prefix.length) / 2) + 1);
+  assert.ok(multibyteCsv.length < MAX_FILE_BYTES);
+  assert.throws(() => parseCsv(multibyteCsv), /25 MB/);
+  await assert.rejects(() => decodeCsvFile(new File([multibyteCsv], 'grande.csv')), /25 MB/);
 });
 
 test('invalid column mappings fail and incorrect row width produces a traceable row error', () => {
