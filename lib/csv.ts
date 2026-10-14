@@ -1,12 +1,12 @@
 import Papa from 'papaparse';
 import type { Product } from './contracts';
+import { MAX_FILE_BYTES, MAX_RECORDS } from './csv-limits';
+export { MAX_FILE_BYTES, MAX_RECORDS } from './csv-limits';
 
 export type Delimiter = ';' | ',';
 export type NumberFormat = 'BR' | 'US';
 export type ColumnMapping = { barcode: number | null; name: number | null; cost: number | null; price: number | null };
 export type ParsedCsv = { headers: string[]; rows: { sourceRow: number; cells: string[] }[]; delimiter: Delimiter };
-export const MAX_FILE_BYTES = 25 * 1024 * 1024;
-export const MAX_RECORDS = 5000;
 
 // Papa handles CSV structure; this additional check rejects stray quotes which
 // its permissive parser otherwise treats as ordinary unquoted characters.
@@ -70,7 +70,7 @@ export function parseCsv(rawText: string, delimiter?: Delimiter): ParsedCsv {
       if (cells.every((cell) => !cell.trim())) return;
       records.push({ sourceRow: startLine, cells });
       if (records.length > MAX_RECORDS + 1) {
-        failure = 'O arquivo ultrapassa 5.000 registros. Divida o catálogo em arquivos menores.';
+        failure = 'O arquivo ultrapassa 150.000 registros. Divida o catálogo em arquivos menores.';
         parser.abort();
       }
     },

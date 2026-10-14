@@ -1,5 +1,6 @@
 import { z } from 'zod';
-const count = z.number().int().min(0).max(5000);
+import { MAX_RECORDS } from './csv-limits';
+const count = z.number().int().min(0).max(MAX_RECORDS);
 const text = z.string().trim().min(1).max(200);
 export const diagnosticSchema = z.object({
   idempotencyKey: z.string().uuid(), demo: z.boolean(), honeypot: z.string().max(0),
@@ -8,7 +9,7 @@ export const diagnosticSchema = z.object({
   summary: z.object({ validCount: count.min(1), invalidCount: count, warningCount: count, negativeCount: count, belowTargetCount: count, excludedCount: count, bands: z.tuple([count,count,count,count]) }).strict()
 }).strict().superRefine((v, ctx) => {
   const s = v.summary;
-  if (s.warningCount > s.validCount || s.validCount + s.invalidCount > 5000 || s.bands.reduce((a,b)=>a+b,0) + s.excludedCount !== s.validCount || s.belowTargetCount > s.validCount - s.excludedCount || s.negativeCount < s.bands[0] || s.negativeCount > s.bands[0] + s.excludedCount || s.belowTargetCount < s.bands[0]) ctx.addIssue({code:'custom', message:'Contagens agregadas inconsistentes.', path:['summary']});
+  if (s.warningCount > s.validCount || s.validCount + s.invalidCount > MAX_RECORDS || s.bands.reduce((a,b)=>a+b,0) + s.excludedCount !== s.validCount || s.belowTargetCount > s.validCount - s.excludedCount || s.negativeCount < s.bands[0] || s.negativeCount > s.bands[0] + s.excludedCount || s.belowTargetCount < s.bands[0]) ctx.addIssue({code:'custom', message:'Contagens agregadas inconsistentes.', path:['summary']});
 });
 export const eventSchema = z.object({ event: z.enum(['landing_view','demo_started','file_selected','import_validated','analysis_viewed','lead_submitted','insights_generated','erp_cta_clicked']), demo: z.boolean() }).strict();
 export const outputSchema = z.object({ findings: z.array(z.string().min(1).max(500)).min(1).max(3), actions: z.array(z.string().min(1).max(500)).min(1).max(3), limitations: z.array(z.string().min(1).max(500)).min(1).max(2) }).strict();

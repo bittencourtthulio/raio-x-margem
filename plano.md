@@ -35,7 +35,7 @@ Três agentes especializados revisaram a proposta e trocaram críticas entre si:
 | Dados + arquitetura | IA não deve calcular nem receber todo o CSV | Servidor valida agregados e IA apenas os explica |
 | Todas as frentes | Quatro horas não comportam importação universal e infraestrutura completa | P0 local estrito; publicação e recursos avançados em etapas próprias |
 
-O limite de importação é **25 MB e 5.000 registros**, para acomodar bases de cadastro exportadas de ERPs.
+O limite de importação é **25 MB e 150.000 registros**, para acomodar bases de cadastro exportadas de ERPs.
 
 ## 3. Usuário, valor e limites da análise
 
@@ -108,7 +108,7 @@ Regras P0:
 - UTF-8 com ou sem BOM, LF ou CRLF, cabeçalho e separador `;` ou `,`.
 - Usar biblioteca de parsing CSV; não dividir texto manualmente por vírgulas.
 - Suportar aspas, separadores dentro de campos e quebras de linha em campos citados.
-- Ignorar linhas vazias; contar registros de dados para o limite de 5.000.
+- Ignorar linhas vazias; contar registros de dados para o limite de 150.000.
 - Arquivo acima de 25 MB, excesso de registros, aspas malformadas ou encoding inválido impedem a importação com orientação para corrigir.
 - Sugerir mapeamento por aliases como `descricao`, `nome`, `custo`, `preco_custo`, `valor_venda`, `ean` e `codigo_barras`; a decisão final é do usuário.
 - Exigir nome, custo e venda em colunas distintas. Código de barras é opcional; colunas extras são ignoradas.

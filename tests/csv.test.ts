@@ -46,7 +46,7 @@ test('malformed quotes, oversized inputs and excessive records block import', ()
   assert.throws(() => parseCsv('nome;custo;venda\nNome"solta;1;2'), /Aspas/);
   assert.throws(() => parseCsv('nome;custo;venda\n"Nome"solta;1;2'), /Aspas/);
   assert.throws(() => parseCsv('x'.repeat(MAX_FILE_BYTES + 1)), /25 MB/);
-  assert.throws(() => parseCsv('nome;custo;venda\n' + 'Item;1;2\n'.repeat(MAX_RECORDS + 1)), /5.000/);
+  assert.throws(() => parseCsv('nome;custo;venda\n' + 'Item;1;2\n'.repeat(MAX_RECORDS + 1)), /150.000/);
   assert.equal(parseCsv('nome;custo;venda\n' + 'Item;1;2\n'.repeat(MAX_RECORDS)).rows.length, MAX_RECORDS);
 });
 

@@ -6,11 +6,27 @@ import { join } from 'node:path';
 import { randomUUID } from 'node:crypto';
 import { LocalRepository, AppError, getRepository } from '../lib/repositories';
 import { diagnosticSchema } from '../lib/validation';
+import { parseCsv, suggestMapping, validateRows, MAX_RECORDS } from '../lib/csv';
+import { analyzeProducts } from '../lib/analysis';
 import { generateDiagnostic } from '../lib/ai';
 import { makeSession, sessionFrom, readJson, sameOrigin } from '../lib/server';
 import type { DiagnosticRequest, DiagnosticResult } from '../lib/contracts';
 const input=(save=false):DiagnosticRequest=>({idempotencyKey:randomUUID(),demo:false,honeypot:'',lead:{name:'Pessoa',businessName:'Loja',contact:'person@example.com',sector:'retail',role:'owner',currentControl:'spreadsheet',systemDifficulty:false,commercialConsent:false,saveSummaryConsent:save,privacyAcknowledged:true},scenario:{discountBps:0,targetBps:2000,feeBps:0,feeEnabled:false},summary:{validCount:2,invalidCount:0,warningCount:0,negativeCount:1,belowTargetCount:1,excludedCount:0,bands:[1,0,0,1]}});
 const result=(id:string):DiagnosticResult=>({id,source:'mock',findings:['Resumo'],actions:['Confira custos'],limitations:['Não equivale a lucro líquido']});
+test('150,000 CSV records can be validated, analyzed and accepted by the diagnostic endpoint schema', () => {
+ const body = input();
+ assert.equal(MAX_RECORDS, 150_000);
+ const parsed = parseCsv('nome;custo;venda\n' + 'Item;1;2\n'.repeat(MAX_RECORDS));
+ const validated = validateRows(parsed, suggestMapping(parsed.headers), 'BR');
+ assert.equal(validated.errors.length, 0);
+ const analysis = analyzeProducts(validated.products, body.scenario);
+ assert.equal(analysis.rows.length, MAX_RECORDS);
+ assert.deepEqual(analysis.summary.bands, [0, 0, 0, MAX_RECORDS]);
+ body.summary = analysis.summary;
+ assert.equal(diagnosticSchema.safeParse(body).success, true);
+ assert.equal(diagnosticSchema.safeParse({...body, summary: {...body.summary, invalidCount: 1}}).success, false);
+ assert.equal(diagnosticSchema.safeParse({...body, summary: {...body.summary, validCount: MAX_RECORDS + 1, bands: [0, 0, 0, MAX_RECORDS + 1]}}).success, false);
+});
 test('no-summary consent stores contact and authorization, no aggregates/output; repeat cannot create lead',()=>{
  const db=new LocalRepository(':memory:'),body=input();const claimed=db.claim('session',body,[]);db.finish('session',body.idempotencyKey,result(claimed.id),false,false);
  const d=db.db.prepare('SELECT * FROM diagnostics').get() as Record<string,unknown>;
